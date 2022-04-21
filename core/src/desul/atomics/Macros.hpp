@@ -15,7 +15,7 @@ SPDX-License-Identifier: (BSD-3-Clause)
     (!defined(__HIP_DEVICE_COMPILE) || !defined(__HIP_PLATFORM_HCC__)) &&    \
     !defined(__SYCL_DEVICE_ONLY__) && !defined(DESUL_HAVE_OPENMP_ATOMICS) && \
     !defined(DESUL_HAVE_SERIAL_ATOMICS)
-#define DESUL_IMPL_HAVE_GCC_OR_MSVC_ATOMICS
+//#define DESUL_IMPL_HAVE_GCC_OR_MSVC_ATOMICS
 #endif
 
 // ONLY use GNUC atomics if not compiling for the device
@@ -37,7 +37,7 @@ SPDX-License-Identifier: (BSD-3-Clause)
 #endif
 
 #ifdef __HIPCC__
-#define DESUL_HAVE_HIP_ATOMICS
+//#define DESUL_HAVE_HIP_ATOMICS
 #endif
 
 #ifdef __SYCL_DEVICE_ONLY__
