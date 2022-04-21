@@ -63,7 +63,7 @@ struct FunctorWrapperRangePolicyParallelFor {
   }
 
   void operator()(sycl::nd_item<1> item) const {
-    const typename Policy::index_type id = item.get_local_id() + m_begin;
+    const typename Policy::index_type id = item.get_global_id() + m_begin;
     if (id < m_range + m_begin) {
       if constexpr (std::is_same<WorkTag, void>::value)
         m_functor_wrapper.get_functor()(id);
@@ -114,7 +114,8 @@ class Kokkos::Impl::ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>,
         const auto actual_range = policy.end() - policy.begin();
         const auto wgroup_size  = Policy::launch_bounds::maxTperB;
         const auto launch_range =
-            (actual_range + wgroup_size - 1) / wgroup_size * wgroup_size;
+            std::ceil(float(actual_range) / wgroup_size) * wgroup_size;
+
         FunctorWrapperRangePolicyParallelFor<Functor, Policy> f{
             policy.begin(), functor, actual_range};
         sycl::nd_range<1> range(launch_range, Policy::launch_bounds::maxTperB);
